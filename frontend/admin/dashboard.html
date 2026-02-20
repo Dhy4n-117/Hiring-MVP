@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard – HireFlow Admin</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">HireFlow</div>
+            <ul class="sidebar-nav">
+                <li><a href="dashboard.html" class="active"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="jobs.html"><span class="icon">💼</span> Jobs</a></li>
+                <li><a href="interviews.html"><span class="icon">📅</span> Interviews</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="logout()">🚪 Sign Out</button>
+            </div>
+        </aside>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h1>Applications Dashboard</h1>
+            </div>
+
+            <div class="stats-row" id="statsRow">
+                <div class="stat-card blue">
+                    <div class="stat-value" id="statTotal">-</div>
+                    <div class="stat-label">Total Applications</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-value" id="statShortlisted">-</div>
+                    <div class="stat-label">Shortlisted</div>
+                </div>
+                <div class="stat-card yellow">
+                    <div class="stat-value" id="statInterview">-</div>
+                    <div class="stat-label">Interviews</div>
+                </div>
+                <div class="stat-card red">
+                    <div class="stat-value" id="statHired">-</div>
+                    <div class="stat-label">Hired</div>
+                </div>
+            </div>
+
+            <div id="alertBox"></div>
+
+            <div class="table-container">
+                <div class="table-toolbar">
+                    <select id="filterJob">
+                        <option value="">All Jobs</option>
+                    </select>
+                    <select id="filterStatus">
+                        <option value="">All Statuses</option>
+                        <option value="Applied">Applied</option>
+                        <option value="Shortlisted">Shortlisted</option>
+                        <option value="Interview Scheduled">Interview Scheduled</option>
+                        <option value="Interviewed">Interviewed</option>
+                        <option value="Offer Sent">Offer Sent</option>
+                        <option value="Hired">Hired</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Candidate</th>
+                            <th>Job</th>
+                            <th>Status</th>
+                            <th>Applied</th>
+                            <th>Resume</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="applicationsTable">
+                        <tr>
+                            <td colspan="6">
+                                <div class="spinner"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Change Modal -->
+    <div class="modal-overlay" id="statusModal">
+        <div class="modal">
+            <h2>Update Status</h2>
+            <div class="form-group">
+                <label>Candidate</label>
+                <input type="text" id="modalCandidate" disabled>
+            </div>
+            <div class="form-group">
+                <label>New Status</label>
+                <select id="modalStatus">
+                    <option value="Applied">Applied</option>
+                    <option value="Shortlisted">Shortlisted</option>
+                    <option value="Interview Scheduled">Interview Scheduled</option>
+                    <option value="Interviewed">Interviewed</option>
+                    <option value="Offer Sent">Offer Sent</option>
+                    <option value="Hired">Hired</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal('statusModal')">Cancel</button>
+                <button class="btn btn-primary" id="saveStatusBtn" onclick="saveStatus()">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>
