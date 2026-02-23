@@ -28,11 +28,11 @@
             </div>
 
             <div id="alertBox"></div>
+            <div class="toast-container" id="toastContainer"></div>
 
             <!-- Schedule Form -->
-            <div
-                style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-bottom: 32px;">
-                <h2 style="font-size: 1.2rem; margin-bottom: 20px;">Schedule New Interview</h2>
+            <div class="schedule-card">
+                <h2>📅 Schedule New Interview</h2>
                 <form id="scheduleForm">
                     <div class="form-group">
                         <label>Select Application</label>
@@ -54,6 +54,14 @@
                     </div>
                     <button type="submit" class="btn btn-primary">📅 Schedule Interview</button>
                 </form>
+            </div>
+
+            <!-- Upcoming Interviews -->
+            <div class="upcoming-section">
+                <h2>📋 Upcoming Interviews</h2>
+                <div class="interview-timeline" id="interviewTimeline">
+                    <div class="spinner"></div>
+                </div>
             </div>
         </div>
     </div>

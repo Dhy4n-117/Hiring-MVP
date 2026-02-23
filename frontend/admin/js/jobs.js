@@ -1,4 +1,4 @@
-// API_BASE and getAuthHeaders() are provided by auth.js
+// API_BASE, getAuthHeaders(), showToast() are provided by auth.js
 let editMode = false;
 
 async function loadJobs() {
@@ -8,7 +8,7 @@ async function loadJobs() {
         renderJobs(jobs);
     } catch (err) {
         document.getElementById('jobsTable').innerHTML =
-            `<tr><td colspan="6" class="empty-state">Failed to load jobs</td></tr>`;
+            `<tr><td colspan="6" class="empty-state"><span class="empty-icon">😕</span> Failed to load jobs</td></tr>`;
     }
 }
 
@@ -16,20 +16,20 @@ function renderJobs(jobs) {
     const tbody = document.getElementById('jobsTable');
 
     if (jobs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No jobs yet. Create your first job posting!</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state"><span class="empty-icon">📋</span> No jobs yet. Create your first job posting!</td></tr>`;
         return;
     }
 
-    tbody.innerHTML = jobs.map(job => `
-        <tr>
+    tbody.innerHTML = jobs.map((job, i) => `
+        <tr style="animation: fadeInUp 0.4s ease-out ${0.03 * i}s both;">
             <td><strong>${job.title}</strong></td>
             <td>${job.department}</td>
             <td>${job.location}</td>
             <td>${job.employmentType}</td>
             <td><span class="badge ${job.isActive ? 'badge-hired' : 'badge-rejected'}">${job.isActive ? 'Active' : 'Inactive'}</span></td>
-            <td>
-                <button class="btn btn-secondary btn-sm" onclick='openEditModal(${JSON.stringify(job)})'>✏️</button>
-                <button class="btn btn-danger btn-sm" onclick="deleteJob('${job._id}')">🗑️</button>
+            <td style="display: flex; gap: 6px;">
+                <button class="btn btn-secondary btn-sm" onclick='openEditModal(${JSON.stringify(job)})' title="Edit job">✏️</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteJob('${job._id}')" title="Delete job">🗑️</button>
             </td>
         </tr>
     `).join('');
@@ -66,7 +66,10 @@ function closeModal(id) {
 }
 
 async function saveJob() {
-    const alertBox = document.getElementById('alertBox');
+    const saveBtn = document.getElementById('saveJobBtn');
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Saving...';
+
     const jobData = {
         title: document.getElementById('jobTitleInput').value,
         department: document.getElementById('jobDepartment').value,
@@ -98,22 +101,22 @@ async function saveJob() {
         const data = await res.json();
 
         if (res.ok) {
-            alertBox.innerHTML = `<div class="alert alert-success">✅ ${data.message}</div>`;
+            showToast(data.message || 'Job saved successfully', 'success');
             closeModal('jobModal');
             loadJobs();
-            setTimeout(() => alertBox.innerHTML = '', 3000);
         } else {
-            alertBox.innerHTML = `<div class="alert alert-error">❌ ${data.message}</div>`;
+            showToast(data.message || 'Failed to save job', 'error');
         }
     } catch (err) {
-        alertBox.innerHTML = `<div class="alert alert-error">❌ Failed to save job</div>`;
+        showToast('Failed to save job', 'error');
+    } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save';
     }
 }
 
 async function deleteJob(id) {
     if (!confirm('Are you sure you want to delete this job?')) return;
-
-    const alertBox = document.getElementById('alertBox');
 
     try {
         const res = await fetch(`${API_BASE}/admin/job/delete/${id}`, {
@@ -126,14 +129,13 @@ async function deleteJob(id) {
         const data = await res.json();
 
         if (res.ok) {
-            alertBox.innerHTML = `<div class="alert alert-success">✅ ${data.message}</div>`;
+            showToast(data.message || 'Job deleted successfully', 'success');
             loadJobs();
-            setTimeout(() => alertBox.innerHTML = '', 3000);
         } else {
-            alertBox.innerHTML = `<div class="alert alert-error">❌ ${data.message}</div>`;
+            showToast(data.message || 'Failed to delete job', 'error');
         }
     } catch (err) {
-        alertBox.innerHTML = `<div class="alert alert-error">❌ Failed to delete job</div>`;
+        showToast('Failed to delete job', 'error');
     }
 }
 

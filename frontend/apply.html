@@ -4,13 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Apply for this position. Submit your resume, cover letter, and portfolio links.">
+    <meta name="description" content="Apply for this position at HireFlow.">
     <title>Apply – HireFlow</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <nav class="navbar">
+    <div class="ambient-orb"></div>
+    <div class="ambient-orb"></div>
+    <div class="ambient-orb"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <canvas id="particles-canvas"></canvas>
+
+    <nav class="navbar" id="navbar">
         <div class="container">
             <a href="/" class="navbar-brand">HireFlow</a>
             <ul class="navbar-links">
@@ -24,6 +30,23 @@
         <div class="form-container">
             <h2>Apply for this Position</h2>
             <p class="subtitle" id="jobTitle">Loading job details...</p>
+
+            <div class="step-indicator">
+                <div class="step active" id="step1">
+                    <div class="step-dot">1</div>
+                    <span class="step-label">Personal Info</span>
+                </div>
+                <div class="step-line" id="line1"></div>
+                <div class="step" id="step2">
+                    <div class="step-dot">2</div>
+                    <span class="step-label">Documents</span>
+                </div>
+                <div class="step-line" id="line2"></div>
+                <div class="step" id="step3">
+                    <div class="step-dot">3</div>
+                    <span class="step-label">Submit</span>
+                </div>
+            </div>
 
             <div id="alertBox"></div>
 
@@ -47,7 +70,15 @@
 
                 <div class="form-group">
                     <label>Resume (PDF/DOC/DOCX) <span class="required">*</span></label>
-                    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                    <div class="file-upload-zone" id="dropZone">
+                        <span class="upload-icon">📄</span>
+                        <div class="upload-text">
+                            Drag & drop your resume here or <strong>browse</strong>
+                        </div>
+                        <div class="file-name" id="fileName" style="display:none;"></div>
+                    </div>
+                    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required
+                        style="display:none;">
                 </div>
 
                 <div class="form-group">
@@ -63,7 +94,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary" style="width: 100%;" id="submitBtn">
-                    Submit Application
+                    Submit Application →
                 </button>
             </form>
         </div>
@@ -71,7 +102,10 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 HireFlow. All rights reserved.</p>
+            <div class="footer-content">
+                <span class="footer-brand">HireFlow</span>
+                <p>&copy; 2026 HireFlow. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 

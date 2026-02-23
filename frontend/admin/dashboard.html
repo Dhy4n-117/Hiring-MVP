@@ -24,32 +24,51 @@
 
         <div class="main-content">
             <div class="page-header">
-                <h1>Applications Dashboard</h1>
+                <div>
+                    <h1>Applications Dashboard</h1>
+                    <div class="welcome-text" id="welcomeText"></div>
+                </div>
             </div>
 
             <div class="stats-row" id="statsRow">
                 <div class="stat-card blue">
-                    <div class="stat-value" id="statTotal">-</div>
+                    <div class="stat-header">
+                        <div class="stat-icon">📋</div>
+                    </div>
+                    <div class="stat-value" id="statTotal">–</div>
                     <div class="stat-label">Total Applications</div>
                 </div>
                 <div class="stat-card green">
-                    <div class="stat-value" id="statShortlisted">-</div>
+                    <div class="stat-header">
+                        <div class="stat-icon">⭐</div>
+                    </div>
+                    <div class="stat-value" id="statShortlisted">–</div>
                     <div class="stat-label">Shortlisted</div>
                 </div>
                 <div class="stat-card yellow">
-                    <div class="stat-value" id="statInterview">-</div>
+                    <div class="stat-header">
+                        <div class="stat-icon">🎯</div>
+                    </div>
+                    <div class="stat-value" id="statInterview">–</div>
                     <div class="stat-label">Interviews</div>
                 </div>
                 <div class="stat-card red">
-                    <div class="stat-value" id="statHired">-</div>
+                    <div class="stat-header">
+                        <div class="stat-icon">🏆</div>
+                    </div>
+                    <div class="stat-value" id="statHired">–</div>
                     <div class="stat-label">Hired</div>
                 </div>
             </div>
 
             <div id="alertBox"></div>
 
+            <!-- Toast container -->
+            <div class="toast-container" id="toastContainer"></div>
+
             <div class="table-container">
                 <div class="table-toolbar">
+                    <input type="text" id="searchCandidate" placeholder="🔍 Search candidates..." class="search-input">
                     <select id="filterJob">
                         <option value="">All Jobs</option>
                     </select>
@@ -110,6 +129,17 @@
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeModal('statusModal')">Cancel</button>
                 <button class="btn btn-primary" id="saveStatusBtn" onclick="saveStatus()">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Candidate Detail Modal -->
+    <div class="modal-overlay" id="candidateModal">
+        <div class="modal">
+            <h2>Candidate Details</h2>
+            <div class="candidate-detail" id="candidateDetail"></div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal('candidateModal')">Close</button>
             </div>
         </div>
     </div>

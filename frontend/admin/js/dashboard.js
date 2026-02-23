@@ -1,7 +1,38 @@
-// API_BASE and getAuthHeaders() are provided by auth.js
+// API_BASE, getAuthHeaders(), showToast() are provided by auth.js
 let allApplications = [];
 let currentAppId = null;
 
+// ─── Welcome Text ────────────────────────────────
+function initWelcome() {
+    const el = document.getElementById('welcomeText');
+    if (!el) return;
+    const name = localStorage.getItem('adminName') || 'Admin';
+    const now = new Date();
+    const hour = now.getHours();
+    let greeting = 'Good evening';
+    if (hour < 12) greeting = 'Good morning';
+    else if (hour < 18) greeting = 'Good afternoon';
+    const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    el.textContent = `${greeting}, ${name} • ${dateStr}`;
+}
+
+// ─── Animated Counter ────────────────────────────
+function animateCounter(id, target) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let current = 0;
+    const increment = Math.max(1, Math.ceil(target / 25));
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        el.textContent = current;
+    }, 35);
+}
+
+// ─── Load Dashboard ──────────────────────────────
 async function loadDashboard() {
     try {
         const res = await fetch(`${API_BASE}/admin/applications`, {
@@ -16,15 +47,15 @@ async function loadDashboard() {
         renderApplications(allApplications);
     } catch (err) {
         document.getElementById('applicationsTable').innerHTML =
-            `<tr><td colspan="6" class="empty-state">Failed to load applications</td></tr>`;
+            `<tr><td colspan="6" class="empty-state"><span class="empty-icon">😕</span> Failed to load applications</td></tr>`;
     }
 }
 
 function updateStats(apps) {
-    document.getElementById('statTotal').textContent = apps.length;
-    document.getElementById('statShortlisted').textContent = apps.filter(a => a.status === 'Shortlisted').length;
-    document.getElementById('statInterview').textContent = apps.filter(a => a.status === 'Interview Scheduled' || a.status === 'Interviewed').length;
-    document.getElementById('statHired').textContent = apps.filter(a => a.status === 'Hired').length;
+    animateCounter('statTotal', apps.length);
+    animateCounter('statShortlisted', apps.filter(a => a.status === 'Shortlisted').length);
+    animateCounter('statInterview', apps.filter(a => a.status === 'Interview Scheduled' || a.status === 'Interviewed').length);
+    animateCounter('statHired', apps.filter(a => a.status === 'Hired').length);
 }
 
 function populateJobFilter(apps) {
@@ -42,15 +73,28 @@ function populateJobFilter(apps) {
 
     select.addEventListener('change', applyFilters);
     document.getElementById('filterStatus').addEventListener('change', applyFilters);
+
+    // Search input
+    const searchInput = document.getElementById('searchCandidate');
+    if (searchInput) {
+        searchInput.addEventListener('input', applyFilters);
+    }
 }
 
 function applyFilters() {
     const jobId = document.getElementById('filterJob').value;
     const status = document.getElementById('filterStatus').value;
+    const search = (document.getElementById('searchCandidate')?.value || '').toLowerCase();
 
     let filtered = allApplications;
     if (jobId) filtered = filtered.filter(a => a.jobId && a.jobId._id === jobId);
     if (status) filtered = filtered.filter(a => a.status === status);
+    if (search) {
+        filtered = filtered.filter(a =>
+            a.name.toLowerCase().includes(search) ||
+            a.email.toLowerCase().includes(search)
+        );
+    }
 
     renderApplications(filtered);
 }
@@ -72,12 +116,12 @@ function renderApplications(apps) {
     const tbody = document.getElementById('applicationsTable');
 
     if (apps.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No applications found</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state"><span class="empty-icon">📭</span> No applications found</td></tr>`;
         return;
     }
 
-    tbody.innerHTML = apps.map(app => `
-        <tr>
+    tbody.innerHTML = apps.map((app, i) => `
+        <tr style="animation: fadeInUp 0.4s ease-out ${0.03 * i}s both; cursor: pointer;" onclick="showCandidateDetail('${app._id}')">
             <td>
                 <strong>${app.name}</strong><br>
                 <span style="color: var(--text-muted); font-size: 0.8rem;">${app.email}</span>
@@ -85,12 +129,65 @@ function renderApplications(apps) {
             <td>${app.jobId ? app.jobId.title : 'N/A'}</td>
             <td><span class="badge ${getStatusBadgeClass(app.status)}">${app.status}</span></td>
             <td>${new Date(app.appliedAt).toLocaleDateString()}</td>
-            <td><a href="${API_BASE}${app.resumeUrl}" target="_blank" class="btn btn-secondary btn-sm">📄 View</a></td>
-            <td><button class="btn btn-primary btn-sm" onclick="openStatusModal('${app._id}', '${app.name}', '${app.status}')">Edit</button></td>
+            <td><a href="${API_BASE}${app.resumeUrl}" target="_blank" class="btn btn-secondary btn-sm" onclick="event.stopPropagation()">📄 View</a></td>
+            <td>
+                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openStatusModal('${app._id}', '${app.name}', '${app.status}')">Edit</button>
+            </td>
         </tr>
     `).join('');
 }
 
+// ─── Candidate Detail Modal ──────────────────────
+function showCandidateDetail(id) {
+    const app = allApplications.find(a => a._id === id);
+    if (!app) return;
+
+    const detailEl = document.getElementById('candidateDetail');
+    detailEl.innerHTML = `
+        <div class="detail-row">
+            <div class="detail-label">Name</div>
+            <div class="detail-value">${app.name}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Email</div>
+            <div class="detail-value">${app.email}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Phone</div>
+            <div class="detail-value">${app.phone || 'N/A'}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Job</div>
+            <div class="detail-value">${app.jobId ? app.jobId.title : 'N/A'}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Status</div>
+            <div class="detail-value"><span class="badge ${getStatusBadgeClass(app.status)}">${app.status}</span></div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Applied</div>
+            <div class="detail-value">${new Date(app.appliedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+        </div>
+        ${app.coverLetter ? `
+        <div class="detail-row">
+            <div class="detail-label">Cover Letter</div>
+            <div class="detail-value">${app.coverLetter}</div>
+        </div>` : ''}
+        ${app.portfolioLinks ? `
+        <div class="detail-row">
+            <div class="detail-label">Portfolio</div>
+            <div class="detail-value"><a href="${app.portfolioLinks}" target="_blank" style="color: var(--primary-light);">${app.portfolioLinks}</a></div>
+        </div>` : ''}
+        <div class="detail-row">
+            <div class="detail-label">Resume</div>
+            <div class="detail-value"><a href="${API_BASE}${app.resumeUrl}" target="_blank" class="btn btn-secondary btn-sm">📄 Download Resume</a></div>
+        </div>
+    `;
+
+    document.getElementById('candidateModal').classList.add('active');
+}
+
+// ─── Status Modal ────────────────────────────────
 function openStatusModal(id, name, currentStatus) {
     currentAppId = id;
     document.getElementById('modalCandidate').value = name;
@@ -104,7 +201,6 @@ function closeModal(id) {
 
 async function saveStatus() {
     const status = document.getElementById('modalStatus').value;
-    const alertBox = document.getElementById('alertBox');
 
     try {
         const res = await fetch(`${API_BASE}/admin/application/status/${currentAppId}`, {
@@ -116,16 +212,17 @@ async function saveStatus() {
         const data = await res.json();
 
         if (res.ok) {
-            alertBox.innerHTML = `<div class="alert alert-success">✅ ${data.message}</div>`;
+            showToast(data.message || 'Status updated successfully', 'success');
             closeModal('statusModal');
             loadDashboard();
-            setTimeout(() => alertBox.innerHTML = '', 3000);
         } else {
-            alertBox.innerHTML = `<div class="alert alert-error">❌ ${data.message}</div>`;
+            showToast(data.message || 'Failed to update status', 'error');
         }
     } catch (err) {
-        alertBox.innerHTML = `<div class="alert alert-error">❌ Failed to update status</div>`;
+        showToast('Failed to update status', 'error');
     }
 }
 
+// ─── Init ────────────────────────────────────────
+initWelcome();
 loadDashboard();
