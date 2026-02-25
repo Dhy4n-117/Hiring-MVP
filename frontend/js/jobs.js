@@ -7,11 +7,11 @@ async function fetchJobs() {
     const res = await fetch(`${API}/jobs`);
     const data = await res.json();
 
-    if (data.success) {
-      allJobs = data.data;
-      populateFilters(allJobs);
-      renderJobs(allJobs);
-    }
+    // Handle both { success, data } format and raw array format
+    const jobs = Array.isArray(data) ? data : (data.success ? data.data : []);
+    allJobs = jobs;
+    populateFilters(allJobs);
+    renderJobs(allJobs);
   } catch (err) {
     document.getElementById('jobsContainer').innerHTML = `
       <div class="empty-state">

@@ -376,11 +376,301 @@
 }
 
 @media (max-width: 600px) {
-    .admin-main {
+
+    .admin-main,
+    .main-content {
         padding: 1rem;
     }
 
-    .data-table-wrapper {
+    .data-table-wrapper,
+    .table-container {
         overflow-x: auto;
+    }
+}
+
+/* ─────────────── Hiring-MVP Class Aliases ─────────────── */
+/* The hiring-mvp admin HTML uses slightly different class names */
+
+.sidebar {
+    width: 250px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border);
+    padding: 1.25rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 1.75rem;
+    background: var(--bg-primary);
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.75rem;
+}
+
+.page-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.welcome-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+/* Logout button */
+.logout-btn {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius);
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.logout-btn:hover {
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+/* Table container alias */
+.table-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-container th {
+    text-align: left;
+    padding: 0.7rem 1.25rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    background: var(--bg-muted);
+    border-bottom: 1px solid var(--border);
+}
+
+.table-container td {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.table-container tr:hover td {
+    background: var(--bg-muted);
+}
+
+/* Table toolbar */
+.table-toolbar {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.table-toolbar .search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.5rem 0.85rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-family: inherit;
+    outline: none;
+}
+
+.table-toolbar .search-input:focus {
+    border-color: var(--accent);
+}
+
+.table-toolbar select {
+    padding: 0.5rem 0.7rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-family: inherit;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Schedule card for interviews */
+.schedule-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.schedule-card h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+/* Upcoming interviews section */
+.upcoming-section {
+    margin-top: 1.5rem;
+}
+
+.upcoming-section h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.interview-timeline {
+    display: grid;
+    gap: 0.75rem;
+}
+
+/* Login wrapper alias (old class name) */
+.login-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background: var(--bg-primary);
+}
+
+.login-wrapper .login-card {
+    position: relative;
+    z-index: 10;
+}
+
+.login-wrapper .brand {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+/* Toast notifications */
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.toast {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    box-shadow: var(--shadow-md);
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    min-width: 250px;
+}
+
+.toast.success {
+    border-left: 3px solid var(--success);
+}
+
+.toast.error {
+    border-left: 3px solid var(--danger);
+}
+
+/* Alert box */
+#alertBox .alert {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+}
+
+#alertBox .alert-success {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid var(--success);
+}
+
+#alertBox .alert-error {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+}
+
+/* Spinner */
+.spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--border);
+    border-top: 3px solid var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 2rem auto;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive aliases */
+@media (max-width: 900px) {
+    .sidebar {
+        width: 64px;
+        padding: 1rem 0.4rem;
+    }
+
+    .sidebar .sidebar-brand {
+        font-size: 0;
+        justify-content: center;
+    }
+
+    .sidebar .sidebar-nav a span:not(.icon) {
+        display: none;
+    }
+
+    .sidebar .sidebar-nav a {
+        justify-content: center;
+        padding: 0.6rem;
+    }
+
+    .main-content {
+        margin-left: 64px;
     }
 }
