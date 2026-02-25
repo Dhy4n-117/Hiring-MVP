@@ -2,92 +2,152 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Browse open positions and join our team. Filter by department and location.">
-    <title>Careers – Open Positions | HireFlow</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Explore open positions and join our team. Browse jobs by department and location." />
+  <title>Careers – HireFlow</title>
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body>
-    <!-- Ambient floating orbs -->
-    <div class="ambient-orb"></div>
-    <div class="ambient-orb"></div>
-    <div class="ambient-orb"></div>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="/" class="navbar-brand">
+        <span class="logo-icon">💼</span>
+        HireFlow
+      </a>
+      <div class="navbar-links">
+        <a href="/" class="active">Jobs</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#contact">Contact</a>
+        <a href="/admin/login.html">HR Login</a>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Cursor glow -->
-    <div class="cursor-glow" id="cursorGlow"></div>
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Find Your Next Opportunity</h1>
+    <p>Explore open roles across our teams. We're looking for talented people to help us build the future.</p>
+  </section>
 
-    <!-- Particles -->
-    <canvas id="particles-canvas"></canvas>
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-group">
+      <label>Department</label>
+      <select id="filterDepartment">
+        <option value="">All Departments</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Location</label>
+      <select id="filterLocation">
+        <option value="">All Locations</option>
+      </select>
+    </div>
+  </div>
 
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <a href="/" class="navbar-brand">HireFlow</a>
-            <ul class="navbar-links">
-                <li><a href="/">Jobs</a></li>
-                <li><a href="/admin/login.html">HR Login</a></li>
-            </ul>
+  <!-- Jobs -->
+  <div class="container">
+    <div id="jobsContainer" class="jobs-grid">
+      <div class="loader">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Employee Reviews -->
+  <section class="reviews-section" id="reviews">
+    <div class="section-header">
+      <h2>What Our Employees Say</h2>
+      <p>Hear from the people who make HireFlow a great place to work.</p>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The culture here is incredibly supportive. I've had more growth in two years than I did
+          in five at my previous company. Leadership genuinely values your input."</p>
+        <div class="review-author">
+          <div class="review-avatar">AS</div>
+          <div>
+            <div class="review-name">Ananya Sharma</div>
+            <div class="review-role">Senior Software Engineer · 2 years</div>
+          </div>
         </div>
-    </nav>
-
-    <section class="hero">
-        <div class="container">
-            <h1><span class="gradient-text" id="heroTitle"></span></h1>
-            <p>Explore open positions and find the role that's right for you. Apply in minutes and start your journey
-                with us.</p>
-            <div class="hero-stats">
-                <div class="stat">
-                    <div class="stat-number" id="jobCount">0</div>
-                    <div class="stat-label">Open Positions</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number" id="deptCount">0</div>
-                    <div class="stat-label">Departments</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number" id="locCount">0</div>
-                    <div class="stat-label">Locations</div>
-                </div>
-            </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Work-life balance is taken seriously, not just talked about. Flexible hours, remote
+          options, and a team that respects boundaries. Highly recommend."</p>
+        <div class="review-author">
+          <div class="review-avatar">RK</div>
+          <div>
+            <div class="review-name">Rahul Kumar</div>
+            <div class="review-role">Product Manager · 1.5 years</div>
+          </div>
         </div>
-    </section>
-
-    <main class="container">
-        <div class="search-filters" id="filters">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="Search jobs by title or keyword...">
-            </div>
-            <div class="filter-group">
-                <select id="filterDepartment">
-                    <option value="">All Departments</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <select id="filterLocation">
-                    <option value="">All Locations</option>
-                </select>
-            </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★☆</div>
+        <p class="review-text">"Great onboarding process and mentorship programs. The company is growing fast, so there
+          are plenty of opportunities to take on new challenges."</p>
+        <div class="review-author">
+          <div class="review-avatar">PM</div>
+          <div>
+            <div class="review-name">Priya Mehta</div>
+            <div class="review-role">UX Designer · 3 years</div>
+          </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <div id="jobsContainer" class="jobs-grid">
-            <div class="spinner"></div>
+  <!-- Contact Us -->
+  <section class="contact-section" id="contact">
+    <div class="section-header">
+      <h2>Contact Us</h2>
+      <p>Have questions about a role or our hiring process? Reach out to us.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon">📧</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value"><a href="mailto:careers@hireflow.com">careers@hireflow.com</a></div>
         </div>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <span class="footer-brand">HireFlow</span>
-                <p>&copy; 2026 HireFlow. All rights reserved.</p>
-            </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📞</div>
+        <div>
+          <div class="contact-label">Phone</div>
+          <div class="contact-value"><a href="tel:+911234567890">+91 123 456 7890</a></div>
         </div>
-    </footer>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Office</div>
+          <div class="contact-value">123 Tech Park, Bengaluru, KA 560001</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-copyright">&copy; 2026 HireFlow. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#reviews">Reviews</a>
+        <a href="#contact">Contact</a>
+        <a href="/admin/login.html">HR Portal</a>
+      </div>
+    </div>
+  </footer>
 
-    <script src="js/jobs.js"></script>
+  <script src="/js/jobs.js"></script>
 </body>
 
 </html>
