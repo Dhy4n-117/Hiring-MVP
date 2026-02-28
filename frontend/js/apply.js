@@ -126,7 +126,7 @@ function initFileUpload() {
 // ─── Form Focus Step Tracking ────────────────────
 function initFormTracking() {
     const personalFields = ['name', 'email', 'phone'];
-    const docFields = ['resume', 'coverLetter', 'portfolioLinks'];
+    const docFields = ['resume', 'coverLetter', 'linkedin', 'github'];
 
     personalFields.forEach(id => {
         const el = document.getElementById(id);
@@ -208,7 +208,9 @@ document.getElementById('applyForm').addEventListener('submit', async (e) => {
     formData.append('phone', document.getElementById('phone').value);
     formData.append('resume', document.getElementById('resume').files[0]);
     formData.append('coverLetter', document.getElementById('coverLetter').value);
-    formData.append('portfolioLinks', document.getElementById('portfolioLinks').value);
+    const linkedin = document.getElementById('linkedin') ? document.getElementById('linkedin').value : '';
+    const github = document.getElementById('github') ? document.getElementById('github').value : '';
+    formData.append('portfolioLinks', `LinkedIn: ${linkedin} | GitHub: ${github}`);
 
     try {
         const res = await fetch(`${API_BASE}/applications/apply`, { method: 'POST', body: formData });

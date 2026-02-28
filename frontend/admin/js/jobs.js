@@ -105,7 +105,8 @@ async function saveJob() {
             closeModal('jobModal');
             loadJobs();
         } else {
-            showToast(data.message || 'Failed to save job', 'error');
+            const errorMsg = data.errors ? data.errors.join(', ') : (data.message || 'Failed to save job');
+            showToast(errorMsg, 'error');
         }
     } catch (err) {
         showToast('Failed to save job', 'error');
