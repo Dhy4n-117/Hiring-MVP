@@ -17,7 +17,10 @@
                 <span class="logo-icon">💼</span>
                 HireFlow
             </a>
-            <div class="navbar-links">
+            <button class="hamburger" id="menuToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="navbar-links" id="navLinks">
                 <a href="/">← Back to Jobs</a>
             </div>
         </div>
@@ -87,6 +90,16 @@
     </footer>
 
     <script src="/js/apply.js"></script>
+    <script>
+        const toggle = document.getElementById('menuToggle');
+        const nav = document.querySelector('.navbar');
+        if (toggle) {
+            toggle.addEventListener('click', () => nav.classList.toggle('open'));
+            document.querySelectorAll('.navbar-links a').forEach(a =>
+                a.addEventListener('click', () => nav.classList.remove('open'))
+            );
+        }
+    </script>
 </body>
 
 </html>

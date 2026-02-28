@@ -347,49 +347,7 @@
     text-align: left;
 }
 
-/* ─────────────── Responsive ─────────────── */
-@media (max-width: 900px) {
-    .admin-sidebar {
-        width: 64px;
-        padding: 1rem 0.4rem;
-    }
-
-    .admin-sidebar .sidebar-brand span:not(.logo-icon),
-    .sidebar-nav a span:not(.nav-icon),
-    .sidebar-footer .admin-name,
-    .sidebar-footer .admin-role {
-        display: none;
-    }
-
-    .admin-main {
-        margin-left: 64px;
-    }
-
-    .sidebar-nav a {
-        justify-content: center;
-        padding: 0.6rem;
-    }
-
-    .sidebar-footer .admin-info {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 600px) {
-
-    .admin-main,
-    .main-content {
-        padding: 1rem;
-    }
-
-    .data-table-wrapper,
-    .table-container {
-        overflow-x: auto;
-    }
-}
-
 /* ─────────────── Hiring-MVP Class Aliases ─────────────── */
-/* The hiring-mvp admin HTML uses slightly different class names */
 
 .sidebar {
     width: 250px;
@@ -560,7 +518,7 @@
     gap: 0.75rem;
 }
 
-/* Login wrapper alias (old class name) */
+/* Login wrapper alias */
 .login-wrapper {
     display: flex;
     align-items: center;
@@ -649,28 +607,250 @@
     }
 }
 
-/* Responsive aliases */
+/* ─────────────── Sidebar Toggle Button ─────────────── */
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 60;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.sidebar-toggle:hover {
+    background: var(--accent-hover);
+}
+
+/* ─────────────── Sidebar Overlay ─────────────── */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 40;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* ─────────────── Responsive — Tablet ─────────────── */
 @media (max-width: 900px) {
-    .sidebar {
+
+    .sidebar,
+    .admin-sidebar {
         width: 64px;
         padding: 1rem 0.4rem;
     }
 
-    .sidebar .sidebar-brand {
+    .sidebar .sidebar-brand,
+    .admin-sidebar .sidebar-brand {
         font-size: 0;
         justify-content: center;
     }
 
-    .sidebar .sidebar-nav a span:not(.icon) {
+    .sidebar .sidebar-nav a span:not(.icon),
+    .admin-sidebar .sidebar-brand span:not(.logo-icon),
+    .sidebar-nav a span:not(.nav-icon),
+    .sidebar-footer .admin-name,
+    .sidebar-footer .admin-role {
         display: none;
     }
 
-    .sidebar .sidebar-nav a {
+    .sidebar .sidebar-nav a,
+    .admin-sidebar .sidebar-nav a {
         justify-content: center;
         padding: 0.6rem;
     }
 
-    .main-content {
+    .sidebar-footer .admin-info {
+        justify-content: center;
+    }
+
+    .main-content,
+    .admin-main {
         margin-left: 64px;
+    }
+
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ─────────────── Responsive — Mobile ─────────────── */
+@media (max-width: 768px) {
+
+    /* Show toggle button */
+    .sidebar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Sidebar becomes off-screen drawer */
+    .sidebar,
+    .admin-sidebar {
+        width: 260px;
+        padding: 1.25rem;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 55;
+    }
+
+    .sidebar.open,
+    .admin-sidebar.open {
+        transform: translateX(0);
+    }
+
+    /* Restore labels when drawer is open */
+    .sidebar.open .sidebar-brand,
+    .admin-sidebar.open .sidebar-brand {
+        font-size: 1.15rem;
+    }
+
+    .sidebar.open .sidebar-nav a span:not(.icon),
+    .sidebar.open .sidebar-nav a span,
+    .admin-sidebar.open .sidebar-brand span:not(.logo-icon),
+    .admin-sidebar.open .sidebar-nav a span:not(.nav-icon),
+    .admin-sidebar.open .sidebar-footer .admin-name,
+    .admin-sidebar.open .sidebar-footer .admin-role {
+        display: inline;
+    }
+
+    .sidebar.open .sidebar-nav a,
+    .admin-sidebar.open .sidebar-nav a {
+        justify-content: flex-start;
+        padding: 0.6rem 0.85rem;
+    }
+
+    /* Main content full-width */
+    .main-content,
+    .admin-main {
+        margin-left: 0;
+        padding: 1.25rem;
+        padding-top: 3.5rem;
+    }
+
+    /* Page header stacks */
+    .page-header,
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    /* Stats grid */
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    /* Table: horizontal scroll */
+    .data-table-wrapper,
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .data-table th,
+    .data-table td,
+    .table-container th,
+    .table-container td {
+        white-space: nowrap;
+        padding: 0.6rem 0.85rem;
+        font-size: 0.8rem;
+    }
+
+    /* Table toolbar */
+    .table-toolbar {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .table-toolbar .search-input {
+        width: 100%;
+    }
+
+    /* Schedule card */
+    .schedule-card {
+        padding: 1.1rem;
+    }
+
+    /* Modal full-width on mobile */
+    .modal {
+        width: 95%;
+        max-height: 90vh;
+        padding: 1.25rem;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .modal-actions .btn {
+        width: 100%;
+    }
+
+    /* Logout button touch target */
+    .logout-btn {
+        min-height: 44px;
+    }
+
+    /* Login page mobile */
+    .login-page {
+        padding: 1rem;
+    }
+
+    .login-card {
+        padding: 1.5rem;
+    }
+}
+
+/* ─────────────── Responsive — Small phones ─────────────── */
+@media (max-width: 480px) {
+
+    .main-content,
+    .admin-main {
+        padding: 1rem;
+        padding-top: 3.5rem;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 0.85rem;
+    }
+
+    .page-header h1,
+    .admin-header h1 {
+        font-size: 1.15rem;
+    }
+
+    .schedule-card h2 {
+        font-size: 0.95rem;
+    }
+
+    .sidebar-toggle {
+        top: 10px;
+        left: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
     }
 }
